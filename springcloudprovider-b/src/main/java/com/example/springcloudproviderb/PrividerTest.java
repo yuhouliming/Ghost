@@ -1,4 +1,4 @@
-package com.example.springcloudprovider;
+package com.example.springcloudproviderb;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,8 +15,8 @@ public class PrividerTest {
     public Map<String,Object> getUser(@RequestParam Integer id){
         Map<String,Object> data = new HashMap<>();
         data.put("id",id);
-        data.put("userName","admin-A");
-        data.put("from","provider-A");
+        data.put("userName","admin-B");
+        data.put("from","provider-B");
         return data;
     }
 }
