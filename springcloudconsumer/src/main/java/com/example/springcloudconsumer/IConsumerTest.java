@@ -12,7 +12,6 @@ import java.util.Map;
 //服务端
 @FeignClient("springcloudprovider")
 public interface IConsumerTest {
-
     @RequestMapping(value = "/provider/test",method = RequestMethod.GET)
     Map<String,Object> getProviderInfo(@RequestParam("id") Integer id);
 
