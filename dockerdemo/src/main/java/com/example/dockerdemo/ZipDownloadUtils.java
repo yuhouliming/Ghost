@@ -1,5 +1,8 @@
 package com.example.dockerdemo;
 
+
+import org.apache.commons.io.FileUtils;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -11,39 +14,42 @@ public class ZipDownloadUtils {
      * @param zipFileName   输出一个压缩文件夹，打包后文件名字
      * @throws Exception
      */
-    public static void zip(String inputFileName, String zipFileName) throws Exception {
-        zip(zipFileName, new File(inputFileName));
+    public static void zip(String inputFileName, String zipFileName,String fileName) throws Exception {
+        zip(zipFileName, new File(inputFileName),fileName);
     }
 
-    private static void zip(String zipFileName, File inputFile) throws Exception {
+    private static void zip(String zipFileName, File inputFile,String fileName) throws Exception {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-        zip(out, inputFile, "");
+        zip(out, inputFile, "",fileName);
         out.close();
     }
 
-    private static void zip(ZipOutputStream out, File f, String base) throws Exception {
+    private static void zip(ZipOutputStream out, File f, String base,String fileName) throws Exception {
         if (f.isDirectory()) { // 判断是否为目录
             File[] fl = f.listFiles();
             out.putNextEntry(new ZipEntry(base + "/"));
-            base = base.length() == 0 ? "" : base + "/";
+            //base = base.length() == 0 ? "" : base + "/";
             for (int i = 0; i < fl.length; i++) {
-                zip(out, fl[i], base + fl[i].getName());
+                zip(out, fl[i], base + fl[i].getName(),fileName);
             }
         } else {
-            //文件
-            try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {
-                //指定zip文件夹
-                ZipEntry zipEntry = new ZipEntry(base);
-                out.putNextEntry(zipEntry);
-                int len;
-                byte[] buffer = new byte[1024 * 10];
-                while ((len = bis.read(buffer, 0, buffer.length)) != -1) {
-                    out.write(buffer, 0, len);
-                    out.flush();
+            if(f.getName().contains(fileName)||f.getName().contains(".wav")){
+                System.out.println("压缩文件"+f.getName());
+                //文件
+                try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {
+                    //指定zip文件夹
+                    ZipEntry zipEntry = new ZipEntry(base);
+                    out.putNextEntry(zipEntry);
+                    int len;
+                    byte[] buffer = new byte[1024 * 10];
+                    while ((len = bis.read(buffer, 0, buffer.length)) != -1) {
+                        out.write(buffer, 0, len);
+                        out.flush();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e.getMessage(), e.getCause());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e.getMessage(), e.getCause());
             }
         }
     }
@@ -79,8 +85,25 @@ public class ZipDownloadUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        //ZipDownloadUtils.zip("E:\\mylog","E:\\pufa.zip");
-        ZipDownloadUtils.moveFile("E:\\mylog\\1253.txt", "E:\\pufa_invote");
+
+        //ZipDownloadUtils.moveFile("E:\\mylog\\1253.txt", "E:\\pufa_invote");
+        String data = "helloWorld";
+        String path = "E:/mylog/1598517843395/";
+        String filename = "test.txt";
+        File file = new File(path+filename);
+        try {
+            byte[] sourceBytes = data.getBytes("UTF-8");
+            if(null!=sourceBytes){
+                FileUtils.writeByteArrayToFile( file, sourceBytes,false);//这里的false代表写入的文件是从头开始重新写入，或者理解为清空文件内容后重新写；若为true,则是接着原本文件内容的结尾开始写
+            }
+        } catch (UnsupportedEncodingException e) {
+            // do something
+        }
+        ZipDownloadUtils.zip("E:\\mylog\\1598517843395","E:\\pufa.zip","test.txt");
+        if(file.exists()){
+            file.delete();
+            System.out.println("文件删除成功"+file.getName());
+        }
     }
 
     public static void moveFile(String startFilePath,String endDirectionPath) {

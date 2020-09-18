@@ -14,7 +14,7 @@ public class dowmLoadController {
     @GetMapping("/test")
     public void hello(HttpServletResponse response) throws Exception {
         //先压缩文件
-        ZipDownloadUtils.zip("E:\\1598517843395","E:\\pufa.zip");
+        //ZipDownloadUtils.zip("E:\\1598517843395","E:\\pufa.zip");
         //下载文件
         File temp = new File("E:\\pufa.zip");
         ZipDownloadUtils .downloadFile(temp, response, true);
