@@ -1,4 +1,4 @@
-package com.example.dockerdemo;
+package com.example.dockerdemo.utils;
 
 
 import org.apache.commons.io.FileUtils;
@@ -87,22 +87,16 @@ public class ZipDownloadUtils {
     public static void main(String[] args) throws Exception {
 
         //ZipDownloadUtils.moveFile("E:\\mylog\\1253.txt", "E:\\pufa_invote");
-        String data = "helloWorld";
-        String path = "E:/mylog/1598517843395/";
-        String filename = "test.txt";
-        File file = new File(path+filename);
-        try {
-            byte[] sourceBytes = data.getBytes("UTF-8");
-            if(null!=sourceBytes){
-                FileUtils.writeByteArrayToFile( file, sourceBytes,false);//这里的false代表写入的文件是从头开始重新写入，或者理解为清空文件内容后重新写；若为true,则是接着原本文件内容的结尾开始写
-            }
-        } catch (UnsupportedEncodingException e) {
-            // do something
-        }
-        ZipDownloadUtils.zip("E:\\mylog\\1598517843395","E:\\pufa.zip","test.txt");
-        if(file.exists()){
-            file.delete();
-            System.out.println("文件删除成功"+file.getName());
+        File file1 = new File("E:\\pufa_invote\\shiping\\ceshi.avi");
+//        File file2 = new File("E:\\mylog\\1598517843395");
+//        FileUtils.copyDirectoryToDirectory(file1, file2);
+//        //然后删除
+//        File file3 = new File(file2.getPath()+"\\"+file1.getName());
+        //FileUtils.deleteDirectory(file3);
+        //moveFile(file1.getPath(),file2.getPath());
+        //moveFile(file2.getPath()+"\\"+file1.getName(),file1.getParent());
+        if(file1.exists()){
+            file1.delete();
         }
     }
 
