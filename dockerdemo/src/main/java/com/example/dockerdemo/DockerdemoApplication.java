@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DockerdemoApplication {
 
     public static void main(String[] args) {
+        System.setProperty("wlm", "9527");
+        System.out.println("wlm");
         SpringApplication.run(DockerdemoApplication.class, args);
     }
 
