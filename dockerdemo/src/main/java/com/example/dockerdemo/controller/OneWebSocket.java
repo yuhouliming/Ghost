@@ -1,4 +1,5 @@
 package com.example.dockerdemo.controller;
 
-public class UploadFileController {
+public class OneWebSocket {
+
 }

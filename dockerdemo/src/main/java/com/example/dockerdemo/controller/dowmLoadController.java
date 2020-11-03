@@ -1,8 +1,11 @@
 package com.example.dockerdemo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.dockerdemo.common.ResponseVo;
 import com.example.dockerdemo.domain.AudioIatTraInfo;
+import com.example.dockerdemo.domain.CalcuTxtInfo;
 import com.example.dockerdemo.mapper.AudioIatTraInfoDao;
+import com.example.dockerdemo.utils.TextCompUtils;
 import com.example.dockerdemo.utils.ZipDownloadUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -55,6 +58,20 @@ public class dowmLoadController {
         logger.error("数据库插入失败", e);
         }
         return responseVo;
+    }
+
+    @ApiOperation(value = "文字准确率和正确率测试", notes = "文字准确率和正确率测试")
+    @RequestMapping(value = "/accTest", method = RequestMethod.POST)
+    public ResponseVo accTest(@RequestBody CalcuTxtInfo calcuTxtInfo) {
+        ResponseVo responseVo = new ResponseVo();
+        TextCompUtils textCompUtils = new TextCompUtils();
+        // JSONObject  jsonObject = textCompUtils.getSimilarityRatio(calcuTxtInfo.getIatTxt(), calcuTxtInfo.getTargetTxt());
+        JSONObject jsonObject = textCompUtils.getTextComp(calcuTxtInfo.getIatTxt(), calcuTxtInfo.getTargetTxt());
+        // String textComp = textCompUtils.getTextComp(calcuTxtInfo.getIatTxt(), calcuTxtInfo.getTargetTxt());
+        // float deviationRate = textCompUtils.getDeviationRate(calcuTxtInfo.getIatTxt(), calcuTxtInfo.getTargetTxt());
+        responseVo.setData(jsonObject);
+        return responseVo;
+
     }
 
 }
