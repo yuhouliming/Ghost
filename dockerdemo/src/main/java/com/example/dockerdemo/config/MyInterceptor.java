@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("前置处理");
+        String sessionId = request.getSession().getId();
+        System.out.println(sessionId);
         return true;
     }
 

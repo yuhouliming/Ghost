@@ -17,7 +17,7 @@ import java.io.InputStream;
  * @author: htxu4
  * 
  */
-@Component
+
 public class FfmpegUtil2 {
 
 

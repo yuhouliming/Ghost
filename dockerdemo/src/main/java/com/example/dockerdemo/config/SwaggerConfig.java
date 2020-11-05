@@ -28,8 +28,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("多语种识别翻译后台管理")
-                .description("多语种识别翻译后台管理")
+        return new ApiInfoBuilder().title("docker项目后台管理")
+                .description("docker项目后台管理")
                 .termsOfServiceUrl("http://localhost:8889/doc.html")
                 .version("1.0").build();
     }
