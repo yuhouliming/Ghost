@@ -1,9 +1,13 @@
 package com.example.dockerdemo.test;
 
+import sun.misc.BASE64Encoder;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -61,24 +65,59 @@ public class FileDownload {
         return file;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+            downFile();
+            Thread.sleep(2000);
+            toTxt();
+
+    }
+    public static void downFile(){
+        ExecutorService taskFixedThreadPool = Executors.newFixedThreadPool(20);
         String photoUrl = "http://172.31.98.100:10086/shuzimima/8L/8L_chaojiang_12585490.pcm;http://172.31.98.100:10086/shuzimima/8L/8L_chaojiang_20848499.pcm";
         String[] urls = photoUrl.split(";");
         String filePath = "E:\\pcm_txt\\";
-        //String fileName =photoUrl.substring(photoUrl.lastIndexOf("/")+1, photoUrl.length());
-        for(int i=0;i<urls.length;i++){
+        for (int i = 0; i < urls.length; i++) {
             String url = urls[i];
-            String fileName =url.substring(url.lastIndexOf("/")+1, url.length());
-            Thread thread = new Thread(new Runnable() {
+            String fileName = url.substring(url.lastIndexOf("/") + 1, url.length());
+            taskFixedThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    File file = saveUrlAs(url, filePath,fileName,"GET");
+                    File file = saveUrlAs(url, filePath, fileName, "GET");
+
                 }
             });
-            thread.start();
         }
-        //System.out.println("fileName---->"+fileName);
     }
 
-
+    public static void toTxt() throws IOException {
+        File filed = new File("E:\\pcm_txt");
+        File[] files = filed.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            FileInputStream inputFile = new FileInputStream(file);
+            byte[] buffer = new byte[(int) file.length()];
+            inputFile.read(buffer);
+            inputFile.close();
+            String str = new BASE64Encoder().encode(buffer);
+            FileWriter fw = null;
+            try {
+                //创建字符输出流对象，负责向文件内写入
+                int index = file.getName().lastIndexOf(".pcm");
+                String txt = "E:\\pcm_txt\\"+file.getName().substring(0, index)+".txt";
+                fw = new FileWriter(txt);
+                //将str里面的内容读取到fw所指定的文件中
+                fw.write(str);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fw != null) {
+                    try {
+                        fw.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 }
