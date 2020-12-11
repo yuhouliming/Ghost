@@ -6,8 +6,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -66,9 +68,24 @@ public class FileDownload {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-            downFile();
-            Thread.sleep(2000);
-            toTxt();
+        ExecutorService taskFixedThreadPool = Executors.newFixedThreadPool(2);
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        StringBuffer stringBuffer =  new StringBuffer();
+        for(int i=0;i<2;i++){
+            taskFixedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String s = "hello";
+                    stringBuffer.append(s);
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await(2, TimeUnit.HOURS);
+        System.out.println(stringBuffer);
+//            downFile();
+//            Thread.sleep(2000);
+//            toTxt();
 
     }
     public static void downFile(){
