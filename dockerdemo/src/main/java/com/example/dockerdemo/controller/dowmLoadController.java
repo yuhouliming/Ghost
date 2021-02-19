@@ -4,17 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.dockerdemo.common.ResponseVo;
 import com.example.dockerdemo.domain.AudioIatTraInfo;
 import com.example.dockerdemo.domain.CalcuTxtInfo;
-import com.example.dockerdemo.mapper.AudioIatTraInfoDao;
 import com.example.dockerdemo.utils.TextCompUtils;
 import com.example.dockerdemo.utils.ZipDownloadUtils;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +24,6 @@ public class dowmLoadController {
     @Value("${hello.test}")
     private String test;
 
-    @Autowired
-    private AudioIatTraInfoDao audioIatTraInfoDao;
 
     @GetMapping("/test")
     @ApiOperation(value = "视频下载", notes = "视频下载")
@@ -53,7 +46,7 @@ public class dowmLoadController {
     public ResponseVo insertData(@RequestBody AudioIatTraInfo audioIatTraInfo) {
         ResponseVo responseVo = new ResponseVo();
         try {
-            audioIatTraInfoDao.insertSelective(audioIatTraInfo);
+//            audioIatTraInfoDao.insertSelective(audioIatTraInfo);
         }catch (Exception e){
         logger.error("数据库插入失败", e);
         }
