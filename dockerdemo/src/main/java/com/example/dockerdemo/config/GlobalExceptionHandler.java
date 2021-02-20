@@ -52,19 +52,5 @@ public class GlobalExceptionHandler {
         return new Result(ResultCode.FAIL, "用户名或密码错误");
     }
 
-//    /**
-//     * 处理空指针的异常
-//     * @param req
-//     * @param e
-//     * @return
-//     */
-//    @ExceptionHandler(value =BusinessErrorException.class)
-//    @ResponseBody
-//    public Result exceptionHandler(HttpServletRequest req, NullPointerException e){
-//        logger.error("发生空指针异常！原因是:",e);
-//        return ResultBody.error(CommonEnum.BODY_NOT_MATCH);
-//    }
-
-
 }
 

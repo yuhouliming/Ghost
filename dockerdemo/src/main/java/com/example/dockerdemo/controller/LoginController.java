@@ -5,11 +5,11 @@ import com.example.dockerdemo.domain.ResultCode;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping(value = "/user")
@@ -25,6 +25,15 @@ public class LoginController {
 //        Cookie cookie = new Cookie("Authorization", token.toString());
 //        cookie.setPath("/");
 //        response.addCookie(cookie);
+        return new Result(ResultCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "获取用户信息")
+    @GetMapping("/getUserInfo")
+    @RequiresPermissions("user:getUserInfo")
+//    @RequiresRoles("admin")
+    public Result getUserInfo() {
+        System.out.println("hello");
         return new Result(ResultCode.SUCCESS);
     }
 }
